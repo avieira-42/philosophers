@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 08:46:55 by avieira-          #+#    #+#             */
-/*   Updated: 2025/09/29 15:31:54 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/09/29 19:41:41 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ void    *my_turn(void *arg)
     play = (t_play *) arg;
     while (1)
     {
-        //value = (random() % 2);
-        value = 1;
+        value = (random() % 2);
         if (value == 0 && play->queens > 0)
         {
             card = "queen";
@@ -70,7 +69,8 @@ void    *my_turn(void *arg)
             play->kings--;
         }
         printf("I draw %s!\n", card);
-        (*(int *)arg)++;
+        if (play->queens == 0 && play->kings == 0)
+            break;
         sleep(play->wait_time);
     }
     return (NULL);
@@ -85,8 +85,7 @@ void   *your_turn(void *arg)
     play = (t_play *) arg;
     while (1)
     {
-        //value = (random() % 2);
-        value = 1;
+        value = (random() % 2);
         if (value == 0 && play->queens > 0)
         {
             card = "queen";
@@ -97,8 +96,9 @@ void   *your_turn(void *arg)
             card = "king";
             play->kings--;
         }
-        printf("I draw %s!\n", card);
-        (*(int *)arg)++;
+        if (play->queens == 0 && play->kings == 0)
+            break;
+        printf("You draw %s!\n", card);
         sleep(play->wait_time);
     }
     return (NULL);
@@ -106,15 +106,20 @@ void   *your_turn(void *arg)
 
 int main(int argc, char **argv)
 {
+    int         i;
     t_play      play;
     pthread_t   new_thread;
+    pthread_t   new_thread2;
+    pthread_t   new_thread3;
 
     if (argc != 2)
         return (1);
-    play.queens = 10;
-    play.kings = 10;
+    play.queens = 4;
+    play.kings = 4;
     play.wait_time = ft_atoi(argv[1]);
-    my_turn(&play);
     pthread_create(&new_thread, NULL, my_turn, &play);
-    pthread_create(&new_thread, NULL, your_turn, &play);
+    pthread_create(&new_thread2, NULL, your_turn, &play);
+
+    pthread_join(new_thread, NULL);
+    pthread_join(new_thread2, NULL);
 }
