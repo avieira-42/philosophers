@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 17:09:16 by avieira-          #+#    #+#             */
-/*   Updated: 2025/09/28 18:42:47 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/09/29 08:46:33 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <stdint.h>
 # include <stdarg.h>
 # include <fcntl.h>
+# include <sys/time.h>
+# include <pthread.h>
 
 // PARSE MESSAGES
 # define MSG_USE "Use: ./prog <philoNo> <dieTime> <sleepTime> <eatTimeNo>(op)\n"
