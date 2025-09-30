@@ -6,10 +6,11 @@
 #    By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/28 16:29:11 by avieira-          #+#    #+#              #
-#    Updated: 2025/09/28 18:35:57 by avieira-         ###   ########.fr        #
+#    Updated: 2025/09/30 18:54:46 by avieira-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+CFLAGS = cc -pthread -g
 NAME = philosophers
 
 B_NAME = philosophers_bonus
