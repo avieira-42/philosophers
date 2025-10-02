@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   threads.c                                          :+:      :+:    :+:   */
+/*   bisca.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 08:46:55 by avieira-          #+#    #+#             */
-/*   Updated: 2025/09/30 21:59:04 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/10/02 19:31:53 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct s_play
 {
     pthread_mutex_t start;
     pthread_mutex_t deck;
+    bool            deck_open;
     int             queens;
     int             kings;
     int             wait_time;
@@ -78,6 +80,9 @@ void    *my_turn(void *arg)
     while (1)
     {
         pthread_mutex_lock(&play->deck);
+        pthread_mutex_unlock(&play->deck);
+        while (play->deck_open == false)
+        {}
         value_card_get(play, &value);
         if (value == 0 && play->queens > 0)
         {
@@ -98,7 +103,6 @@ void    *my_turn(void *arg)
         }
         printf("I draw %s!\n", card);
         play->player_1_score += play->player_1_round;
-        pthread_mutex_unlock(&play->deck);
         usleep(play->wait_time);
     }
     return (NULL);
@@ -198,6 +202,7 @@ void    game_init(t_play *play, char *argv1)
 {
     pthread_mutex_init(&play->start, NULL);
     pthread_mutex_init(&play->deck, NULL);
+    play->deck_open = true;
     play->queens = 4;
     play->kings = 4;
     play->player_1_round = 0;
@@ -231,7 +236,7 @@ void    threads_create(t_play *play)
 int main(int argc, char **argv)
 {
     int         i;
-    t_play      play;
+    t_play fd     play;
 
     if (argc != 2)
         return (1);
