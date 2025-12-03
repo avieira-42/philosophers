@@ -1,24 +1,14 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/09/28 16:29:11 by avieira-          #+#    #+#              #
-#    Updated: 2025/09/30 18:54:46 by avieira-         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
-CFLAGS = cc -pthread -g
+CC = cc
+CFLAGS = -pthread -g
 NAME = philosophers
 
 B_NAME = philosophers_bonus
 
 SRCS = srcs/philosophers.c \
-srcs/error.c \
-srcs/parse.c \
-srcs/ft_putstr_fd.c
+	   srcs/error.c \
+	   srcs/parse.c \
+	   srcs/ft_atoi.c \
+	   srcs/ft_putstr_fd.c
 
 OBJS = $(SRCS:.c=.o)
 

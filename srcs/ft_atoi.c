@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 19:12:56 by avieira-          #+#    #+#             */
-/*   Updated: 2025/04/09 19:41:33 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/12/02 22:14:15 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_atoi(const char *nptr)
 		i++;
 	}
 	else if (nptr[i] == '+')
-		i++;
+			i++;
 	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
 		nb = nptr[i] - '0' + nb * 10;
@@ -35,9 +35,3 @@ int	ft_atoi(const char *nptr)
 	}
 	return (nb * s);
 }
-/*
-#include <stdio.h>
-int	main(int argc, char **argv)
-{
-	printf("%i", ft_atoi(argv[1]));
-}*/

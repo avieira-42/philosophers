@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philosophers.h                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/28 17:09:16 by avieira-          #+#    #+#             */
-/*   Updated: 2025/10/02 19:29:52 by avieira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
@@ -25,28 +13,50 @@
 # include <pthread.h>
 
 // PHILOSOPHER STRUCT
-typedef struct philosopher
+typedef struct s_philosopher
+{
+}	t_philosopher;
+
+// SIMULATION STRUCT
+typedef struct s_simulation
+{
+	int				number_of_philosophers;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				number_of_times_each_philosopher_must_eat;
+	int				*fork;
+	int				*chair;
+	pthread_t		*philosopher;
+	pthread_t		feast;
+	pthread_mutex_t	begin;
+	pthread_mutex_t	fork_handling;
+	//pthread_mutex_t	philosopher_number_generator;
+}	t_simulation;
 
 // PARSE MESSAGES
 # define MSG_USE "Use: ./prog <philoNo> <dieTime> <sleepTime> <eatTimeNo>(op)\n"
+# define MSG_ALLOC_ERR "Couldn't allocate memory\n"
 
 // STATE MESSAGES
 
 /* A displayed state message should not overlap with another message
- * A message announcing a p hilosopher's death must be displayed
+ * A message announcing a philosopher's death must be displayed
  * within 10 ms of their actual death */
 
-# define MSG_TAKEN_FORK "has taken a fork\n"
-# define MSG_EATING "is eating\n"
-# define MSG_SLEEPING "is sleeping\n"
-# define MSG_THINKING "is thinking\n"
-# define MSG_DIED "died\n"
+# define MSG_TAKEN_FORK "%i has taken a fork\n"
+# define MSG_EATING "%i is eating\n"
+# define MSG_SLEEPING "%i is sleeping\n"
+# define MSG_THINKING "%i is thinking\n"
+# define MSG_DIED "%i died\n"
 
 
-void    error_exit(int error_code);
+void    error_exit(int error_code, void *memory, void *memory2);
 
 void    parse_arguments(int argc, char **argv);
 
 void	ft_putstr_fd(char *s, int fd);
+
+int		ft_atoi(const char *nptr);
 
 #endif

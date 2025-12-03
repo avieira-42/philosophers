@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 08:46:55 by avieira-          #+#    #+#             */
-/*   Updated: 2025/10/02 19:31:53 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/12/03 01:24:18 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,7 @@ void    threads_create(t_play *play)
 int main(int argc, char **argv)
 {
     int         i;
-    t_play fd     play;
+    t_play     play;
 
     if (argc != 2)
         return (1);
