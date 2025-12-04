@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 19:12:56 by avieira-          #+#    #+#             */
-/*   Updated: 2025/12/02 22:14:15 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/06/20 20:21:49 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_atoi(const char *nptr)
+long int	ft_atol(char *nptr)
 {
-	int				s;
-	int				nb;
+	long int		s;
+	long int		nb;
 	unsigned int	i;
 
 	s = 1;
@@ -21,13 +21,12 @@ int	ft_atoi(const char *nptr)
 	i = 0;
 	while (nptr[i] == ' ' || (nptr[i] >= '\t' && nptr[i] <= '\r'))
 		i++;
-	if (nptr[i] == '-')
+	while (nptr[i] == '-' || nptr[i] == '+')
 	{
-		s = -1;
+		if (nptr[i] == '-')
+			s *= -1;
 		i++;
 	}
-	else if (nptr[i] == '+')
-			i++;
 	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
 		nb = nptr[i] - '0' + nb * 10;
@@ -35,3 +34,9 @@ int	ft_atoi(const char *nptr)
 	}
 	return (nb * s);
 }
+/*
+#include <stdio.h>
+int	main(int argc, char **argv)
+{
+	printf("%li", ft_atol(argv[1]));
+}*/

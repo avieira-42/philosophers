@@ -7,7 +7,7 @@ B_NAME = philo_bonus
 SRCS = srcs/main.c \
 	   srcs/error.c \
 	   srcs/parse.c \
-	   srcs/ft_atoi.c \
+	   srcs/ft_atol.c \
 	   srcs/ft_putstr_fd.c
 
 OBJS = $(SRCS:.c=.o)

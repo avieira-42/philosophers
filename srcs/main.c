@@ -12,16 +12,21 @@ long long	get_current_time(void)
 	return ((long long) (tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
+long long	get_current_time_stamp(long long feast_start)
+{
+	return (get_current_time() - feast_start);
+}
+
 void	rules_init(t_rule *rule, int argc, char **argv)
 {
-	rule->number_of_philosophers = ft_atoi(argv[1]);
-	rule->time_to_die = ft_atoi(argv[2]);
-	rule->time_to_eat = ft_atoi(argv[3]);
-	rule->time_to_sleep = ft_atoi(argv[4]);
+	rule->number_of_philosophers = ft_atol(argv[1]);
+	rule->time_to_die = ft_atol(argv[2]) * 1000;
+	rule->time_to_eat = ft_atol(argv[3]) * 1000;
+	rule->time_to_sleep = ft_atol(argv[4]) * 1000;
 	if (argc == 5)
-		rule->number_of_times_each_philosopher_must_eat = 0;
+		rule->times_each_philosopher_must_eat = 0;
 	else if (argc == 6)
-		rule->number_of_times_each_philosopher_must_eat = ft_atoi(argv[5]);
+		rule->times_each_philosopher_must_eat = ft_atol(argv[5]) * 1000;
 }
 
 void	philo_init(t_feast *feast, t_philo **philo, int philo_total)
@@ -96,12 +101,14 @@ void	feast_welcoming(t_feast *feast, t_philo *philo)
 	size_t	i;
 
 	i = 0;
+	feast->start = get_current_time();
 	pthread_mutex_lock(&feast->mutex->welcoming);
 	while (i < feast->rule.number_of_philosophers)
 	{
 		philo[i].life_return = 0;
 		philo[i].chair = i + 1;
 		philo[i].mutex = feast->mutex;
+		philo[i].start = feast->start;
 		if (pthread_create(&philo[i].life, NULL, philo_routine, &philo[i]) != 0)
 			error_exit(feast, 2);
 		i++;
@@ -180,8 +187,16 @@ void	*philo_routine(void *arg)
 	pthread_mutex_lock(&philo->mutex->welcoming);
 	printf("I am in the chair %i\n", philo->chair);
 	pthread_mutex_unlock(&philo->mutex->welcoming);
-	// TRY TO EAT
-
+	while (1)
+	{
+		fork_pick_up(philo);
+		printf(MSG_EATING, get_current_time_stamp(philo->start), philo->chair);
+		usleep(philo->rule.time_to_eat);
+		fork_put_down(philo);
+		printf(MSG_SLEEPING, philo->chair);
+		usleep(philo->rule.time_to_sleep);
+		printf(MSG_THINKING, philo->chair);
+	}
 	return (NULL);
 }
 
