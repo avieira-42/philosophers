@@ -1,20 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/28 17:12:35 by avieira-          #+#    #+#             */
-/*   Updated: 2025/12/03 01:18:44 by avieira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../include/philosophers.h"
+#include "../include/philo.h"
 
 void    parse_arguments(int argc, char **argv)
 {
     if (argc < 5 || argc > 6)
-        error_exit(1, NULL , NULL);
+        error_exit(NULL, 1);
     return ;
 }

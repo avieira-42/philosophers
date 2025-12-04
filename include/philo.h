@@ -1,5 +1,5 @@
-#ifndef PHILOSOPHERS_H
-# define PHILOSOPHERS_H
+#ifndef PHILO_H
+# define PHILO_H
 
 # include <unistd.h>
 # include <stdio.h>
@@ -12,27 +12,53 @@
 # include <sys/time.h>
 # include <pthread.h>
 
-// PHILOSOPHER STRUCT
-typedef struct s_philosopher
+typedef enum s_state
 {
-}	t_philosopher;
+	WAITING_TO_EAT,
+	EATING,
+	SLEEPING,
+	THINKING,
+}	t_state;
 
-// SIMULATION STRUCT
-typedef struct s_simulation
+typedef struct s_rule
 {
-	int				number_of_philosophers;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				number_of_times_each_philosopher_must_eat;
+	int			number_of_philosophers;
+	int			number_of_times_each_philosopher_must_eat;
+	long long	time_to_die;
+	long long	time_to_eat;
+	long long	time_to_sleep;
+}	t_rule;
+
+typedef struct s_mutex
+{
+	int				welcoming_return;
+	int				fork_handling_return;
+	int				fork_handling_state;
+	pthread_mutex_t	welcoming;
+	pthread_mutex_t	fork_handling;
+}	t_mutex;
+
+typedef struct s_philo
+{
+	int			life_return;
+	int			chair;
+	int			*fork;
+	int			philo_total;
+	long long	last_meal;
+	t_state		state;
+	pthread_t	life;
+	t_mutex		*mutex;
+	t_rule		rule;
+}	t_philo;
+
+typedef struct s_feast
+{
 	int				*fork;
 	int				*chair;
-	pthread_t		*philosopher;
-	pthread_t		feast;
-	pthread_mutex_t	begin;
-	pthread_mutex_t	fork_handling;
-	//pthread_mutex_t	philosopher_number_generator;
-}	t_simulation;
+	t_rule			rule;
+	t_mutex			*mutex;
+	t_philo			*philo;
+}	t_feast;
 
 // PARSE MESSAGES
 # define MSG_USE "Use: ./prog <philoNo> <dieTime> <sleepTime> <eatTimeNo>(op)\n"
@@ -51,7 +77,7 @@ typedef struct s_simulation
 # define MSG_DIED "%i died\n"
 
 
-void    error_exit(int error_code, void *memory, void *memory2);
+void    error_exit(t_feast *feast, int exit_code);
 
 void    parse_arguments(int argc, char **argv);
 

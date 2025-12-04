@@ -1,10 +1,10 @@
 CC = cc
 CFLAGS = -pthread -g
-NAME = philosophers
+NAME = philo
 
-B_NAME = philosophers_bonus
+B_NAME = philo_bonus
 
-SRCS = srcs/philosophers.c \
+SRCS = srcs/main.c \
 	   srcs/error.c \
 	   srcs/parse.c \
 	   srcs/ft_atoi.c \
