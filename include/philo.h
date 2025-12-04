@@ -11,6 +11,7 @@
 # include <fcntl.h>
 # include <sys/time.h>
 # include <pthread.h>
+# include <stdbool.h>
 
 typedef enum s_state
 {
@@ -19,6 +20,12 @@ typedef enum s_state
 	SLEEPING,
 	THINKING,
 }	t_state;
+
+typedef	enum s_eating_order
+{
+	ODD,
+	EVEN,
+}	t_eating_order;
 
 typedef struct s_rule
 {
@@ -31,21 +38,20 @@ typedef struct s_rule
 
 typedef struct s_mutex
 {
-	int				queue;
+	bool			*fork_used;
+	int				*fork_return;
+	pthread_mutex_t	*fork;
 	int				welcoming_return;
-	int				fork_handling_return;
-	int				fork_handling_state;
 	pthread_mutex_t	welcoming;
-	pthread_mutex_t	fork_handling;
 }	t_mutex;
 
 typedef struct s_philo
 {
 	int			life_return;
 	int			chair;
-	int			*fork;
 	int			philo_total;
-	int			queue_place;
+	bool		holding_first_fork;
+	bool		hodling_second_fork;
 	long long	last_meal;
 	t_state		state;
 	pthread_t	life;
@@ -53,10 +59,10 @@ typedef struct s_philo
 	t_rule		rule;
 }	t_philo;
 
+// SET EVERY POINTER TO NULL BEFORE ANYTHING
 typedef struct s_feast
 {
 	int				*fork;
-	int				*chair;
 	t_rule			rule;
 	t_mutex			*mutex;
 	t_philo			*philo;

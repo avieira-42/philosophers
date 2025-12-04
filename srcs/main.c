@@ -37,7 +37,6 @@ void	philo_init(t_feast *feast, t_philo **philo, int philo_total)
 		(*philo)[i].philo_total = philo_total;
 		(*philo)[i].life_return = 0;
 		(*philo)[i].chair = 0;
-		(*philo)[i].fork = feast->fork;
 		(*philo)[i].last_meal = 0;
 		(*philo)[i].state = WAITING_TO_EAT;
 		(*philo)[i].mutex = NULL;
@@ -46,20 +45,45 @@ void	philo_init(t_feast *feast, t_philo **philo, int philo_total)
 	}
 }
 
+void	meals_preparation(t_feast *feast, t_mutex **mutex)
+{
+	size_t	i;
+
+	(*mutex)->fork = malloc(
+			sizeof(pthread_mutex_t) * feast->rule.number_of_philosophers + 1);
+	if ((*mutex)->fork == NULL)
+		error_exit(feast, 2);
+	(*mutex)->fork_return = malloc(
+			sizeof(int) * feast->rule.number_of_philosophers + 1);
+	if ((*mutex)->fork_return == NULL)
+		error_exit(feast, 2);
+	(*mutex)->fork_used = malloc(
+			sizeof(bool) * feast->rule.number_of_philosophers + 1);
+	if ((*mutex)->fork == NULL)
+		error_exit(feast, 2);
+	i = 0;
+	(*mutex)->fork_return[i] = -1;
+	while (i <= feast->rule.number_of_philosophers)
+	{
+		i++;
+		(*mutex)->fork_used[i] = false;
+		(*mutex)->fork_return[i + 1] = pthread_mutex_init((*mutex)->fork, NULL);
+		if ((*mutex)->fork_return != 0)
+			error_exit(feast, 2);
+	}
+}
+
 void	mutexes_init(t_feast *feast, t_mutex **mutex)
 {
+	//(*mutex)->fork_used = NULL;
+	//(*mutex)->fork_return = NULL;
+	//(*mutex)->fork = NULL;
 	*mutex = malloc(sizeof(t_mutex) * 1);
 	if (*mutex == NULL)
 		error_exit(feast, 2);
 	(*mutex)->welcoming_return = -1;
-	(*mutex)->fork_handling_return = -1;
 	(*mutex)->welcoming_return = pthread_mutex_init(&(*mutex)->welcoming, NULL);
 	if ((*mutex)->welcoming_return != 0)
-		error_exit(feast, 2);
-	(*mutex)->fork_handling_return = pthread_mutex_init(
-										&(*mutex)->fork_handling, NULL);
-	(*mutex)->queue = -1;
-	if ((*mutex)->fork_handling_return != 0)
 		error_exit(feast, 2);
 }
 
@@ -67,17 +91,13 @@ void	variables_init(t_feast *feast, int philo_total)
 {
 	size_t	i;
 
-	feast->fork = malloc(sizeof(int) * philo_total);
+	feast->fork = malloc(sizeof(int) * (philo_total + 1));
 	if (feast->fork == NULL)
 		error_exit(feast, 2);
-	feast->chair = malloc(sizeof(int) * philo_total);
-	if (feast->chair == NULL)
-		error_exit(feast, 2);
 	i = 0;
-	while (i < feast->rule.number_of_philosophers)
+	while (i <= feast->rule.number_of_philosophers)
 	{
 		feast->fork[i] = 0;
-		feast->chair[i] = 0;
 		i++;
 	}
 }
@@ -85,7 +105,6 @@ void	variables_init(t_feast *feast, int philo_total)
 void	feast_prepare(t_feast *feast, int argc, char **argv)
 {
 	feast->fork = NULL;
-	feast->chair = NULL;
 	feast->philo = NULL;
 	rules_init(&feast->rule, argc, argv);
 	variables_init(feast, feast->rule.number_of_philosophers);
@@ -126,9 +145,7 @@ void	feast_celebration(t_feast *feast)
 
 void	feast_leave_taking(t_feast *feast)
 {
-	pthread_mutex_destroy(&feast->mutex->welcoming);
-	pthread_mutex_destroy(&feast->mutex->fork_handling);
-	// print message ?
+	error_exit(feast, 0);
 }
 
 void	feast(t_feast *feast, int argc, char **argv)
@@ -139,86 +156,26 @@ void	feast(t_feast *feast, int argc, char **argv)
 	feast_leave_taking(feast);
 }
 
-void	philo_number_assign(t_feast *feast, int *philo_number)
+void	fork_pick_up(t_philo *philo)
 {
-	size_t	i;
-
-	i = 0;
-	while (i < feast->rule.number_of_philosophers)
-	{
-		if (feast->chair[i] == 0)
-			break;
-		i++;
-	}
-	feast->chair[i] = -1;
-	*philo_number = i + 1;
-}
-
-bool	fork_pick_up(t_philo *philo)
-{
-	if (philo->chair == 1)
-	{
-		if (philo->fork[1] == 0
-				&& philo->fork[philo->philo_total] == 0)
-		{
-			philo->fork[1] = -1;
-			printf(MSG_TAKEN_FORK, philo->chair);
-			philo->fork[philo->philo_total] = -1;
-			printf(MSG_TAKEN_FORK, philo->chair);
-			return (true);
-		}
-	}
-	else
-	{
-		if (philo->fork[philo->chair] == 0
-				&& philo->fork[philo->chair - 1] == 0)
-		{
-			philo->fork[philo->chair] = -1;
-			printf(MSG_TAKEN_FORK, philo->chair);
-			philo->fork[philo->chair - 1] = -1;
-			printf(MSG_TAKEN_FORK, philo->chair);
-			return (true);
-		}
-	}
-	return (false);
+	// SET FORK USED TO TRUE
 }
 
 void	fork_put_down(t_philo *philo)
 {
-	philo->fork[philo->chair] = 0;
-	if (philo->chair == 1)
-		philo->fork[philo->rule.number_of_philosophers] = 0;
-	else
-		philo->fork[philo->chair - 1] = 0;
+	// SET FORK USED TO FALSE
 }
 
 void	*philo_routine(void *arg)
 {
-	bool			can_eat;
 	t_philo			*philo;
 
-	can_eat = false;
 	philo = (t_philo *) arg;
 	pthread_mutex_lock(&philo->mutex->welcoming);
 	printf("I am in the chair %i\n", philo->chair);
+	//if (
 	pthread_mutex_unlock(&philo->mutex->welcoming);
-	while (1)
-	{
-		while (can_eat == false)
-		{
-			pthread_mutex_lock(&philo->mutex->fork_handling);
-			can_eat = fork_pick_up(philo);
-			pthread_mutex_unlock(&philo->mutex->fork_handling);
-		}
-		printf(MSG_EATING, philo->chair);
-		usleep(philo->rule.time_to_eat);
-		pthread_mutex_lock(&philo->mutex->fork_handling);
-		fork_put_down(philo);
-		printf(MSG_SLEEPING, philo->chair);
-		pthread_mutex_unlock(&philo->mutex->fork_handling);
-		can_eat = false;
-		usleep(philo->rule.time_to_sleep);
-	}
+
 	return (NULL);
 }
 
