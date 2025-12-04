@@ -38,7 +38,6 @@ typedef struct s_rule
 
 typedef struct s_mutex
 {
-	bool			*fork_used;
 	int				*fork_return;
 	pthread_mutex_t	*fork;
 	int				welcoming_return;
@@ -50,8 +49,6 @@ typedef struct s_philo
 	int			life_return;
 	int			chair;
 	int			philo_total;
-	bool		holding_first_fork;
-	bool		hodling_second_fork;
 	long long	last_meal;
 	t_state		state;
 	pthread_t	life;
@@ -62,7 +59,6 @@ typedef struct s_philo
 // SET EVERY POINTER TO NULL BEFORE ANYTHING
 typedef struct s_feast
 {
-	int				*fork;
 	t_rule			rule;
 	t_mutex			*mutex;
 	t_philo			*philo;

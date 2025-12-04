@@ -8,7 +8,7 @@ void	ft_putchar_fd(char c, int fd)
 
 void	ft_putstr_fd(char *s, int fd)
 {
-	while (*s && fd != -1)
+	while (s && *s && fd != -1)
 	{
 		ft_putchar_fd(*s, fd);
 		s++;
