@@ -58,6 +58,7 @@ void	mutexes_init(t_feast *feast, t_mutex **mutex)
 		error_exit(feast, 2);
 	(*mutex)->fork_handling_return = pthread_mutex_init(
 										&(*mutex)->fork_handling, NULL);
+	(*mutex)->queue = -1;
 	if ((*mutex)->fork_handling_return != 0)
 		error_exit(feast, 2);
 }

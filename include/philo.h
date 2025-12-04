@@ -31,6 +31,7 @@ typedef struct s_rule
 
 typedef struct s_mutex
 {
+	int				queue;
 	int				welcoming_return;
 	int				fork_handling_return;
 	int				fork_handling_state;
@@ -44,6 +45,7 @@ typedef struct s_philo
 	int			chair;
 	int			*fork;
 	int			philo_total;
+	int			queue_place;
 	long long	last_meal;
 	t_state		state;
 	pthread_t	life;
