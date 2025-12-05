@@ -107,6 +107,7 @@ void	feast_welcoming(t_feast *feast, t_philo *philo)
 	{
 		philo[i].life_return = 0;
 		philo[i].chair = i + 1;
+		convert_names_1(philo[i].chair, &philo[i].name);
 		philo[i].mutex = feast->mutex;
 		philo[i].start = feast->start;
 		if (pthread_create(&philo[i].life, NULL, philo_routine, &philo[i]) != 0)
@@ -190,12 +191,17 @@ void	*philo_routine(void *arg)
 	while (1)
 	{
 		fork_pick_up(philo);
-		printf(MSG_EATING, get_current_time_stamp(philo->start), philo->chair);
+		printf(MSG_EATING, get_current_time_stamp(philo->start),
+				philo->chair, philo->name);
 		usleep(philo->rule.time_to_eat);
 		fork_put_down(philo);
-		printf(MSG_SLEEPING, philo->chair);
+		printf(MSG_SLEEPING, get_current_time_stamp(philo->start),
+				philo->chair, philo->name);
 		usleep(philo->rule.time_to_sleep);
-		printf(MSG_THINKING, philo->chair);
+		printf(MSG_EATING, get_current_time_stamp(philo->start),
+				philo->chair, philo->name);
+		printf(MSG_THINKING, get_current_time_stamp(philo->start),
+				philo->chair, philo->name);
 	}
 	return (NULL);
 }

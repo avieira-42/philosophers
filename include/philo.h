@@ -12,6 +12,7 @@
 # include <sys/time.h>
 # include <pthread.h>
 # include <stdbool.h>
+# include "../srcs/get_names/get_names.h"
 
 # define MSG_USE "Usage: ./prog <number_of_philosophers> <time_to_die> \
 <time_to_eat> <time_to_sleep> <nnumber_of_times_each_philosopher_must_eat> \
@@ -21,11 +22,11 @@
 /* A displayed state message should not overlap with another message
  * A message announcing a philosopher's death must be displayed
  * within 10 ms of their actual death */
-# define MSG_TAKEN_FORK "%i has taken a fork\n"
-# define MSG_EATING "%lld %i is eating\n"
-# define MSG_SLEEPING "%i is sleeping\n"
-# define MSG_THINKING "%i is thinking\n"
-# define MSG_DIED "%i died\n"
+# define MSG_TAKEN_FORK "%lld (%i) %s has taken a fork\n"
+# define MSG_EATING "%lld (%i) %s is eating pasta\n"
+# define MSG_SLEEPING "%lld (%i) %s is taking a well deserved shut eye\n"
+# define MSG_THINKING "%lld (%i) %s is frying is brains out\n"
+# define MSG_DIED "%lld (%i) %s dead\n"
 
 typedef enum s_state
 {
@@ -63,6 +64,7 @@ typedef struct s_philo
 {
 	int			life_return;
 	int			chair;
+	char		*name;
 	int			philo_total;
 	long long	start;
 	long long	last_meal;

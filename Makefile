@@ -8,7 +8,21 @@ SRCS = srcs/main.c \
 	   srcs/error.c \
 	   srcs/parse.c \
 	   srcs/ft_atol.c \
-	   srcs/ft_putstr_fd.c
+	   srcs/ft_putstr_fd.c \
+	   srcs/get_names/get_names.c \
+	   srcs/get_names/get_names_0.c \
+	   srcs/get_names/get_names_1.c \
+	   srcs/get_names/get_names_2.c \
+	   srcs/get_names/get_names_3.c \
+	   srcs/get_names/get_names_4.c \
+	   srcs/get_names/get_names_5.c \
+	   srcs/get_names/get_names_6.c \
+	   srcs/get_names/get_names_7.c \
+	   srcs/get_names/get_names_8.c \
+	   srcs/get_names/get_names_9.c \
+	   srcs/get_names/get_names_10.c \
+	   srcs/get_names/get_names_11.c \
+	   srcs/get_names/get_names_12.c
 
 OBJS = $(SRCS:.c=.o)
 
