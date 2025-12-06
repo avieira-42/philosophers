@@ -203,6 +203,21 @@ void	fork_put_down(t_philo *philo)
 		pthread_mutex_unlock(&philo->mutex->fork[philo->chair]);
 	}
 }
+void	ft_usleep(int time, t_philo *philo)
+{
+	long long	start_time;
+	int			i;
+
+	i = 0;
+	start_time = get_current_time();
+	while (!*(philo->death))
+	{
+		usleep(10);
+		if (get_current_time() - start_time >= (long long)time)
+			break ;
+		i++;
+	}
+}
 
 void	*death_collector(void *arg)
 {
@@ -251,18 +266,18 @@ void	*philo_routine(void *arg)
 	philo = (t_philo *) arg;
 	pthread_mutex_lock(&philo->mutex->welcoming);
 	pthread_mutex_unlock(&philo->mutex->welcoming);
-	while (*(philo->death) == false)
+	while (philo->death == false)
 	{
 		fork_pick_up(philo);
 		pthread_mutex_lock(&philo->last_meal_mutex);
 		philo->last_meal = get_current_time_stamp(philo->start);
 		state_message_print(philo, MSG_EATING, philo->last_meal);
 		pthread_mutex_unlock(&philo->last_meal_mutex);
-		usleep(philo->rule.time_to_eat * 1000);
+		ft_usleep(philo->rule.time_to_eat * 1000, philo);
 		fork_put_down(philo);
 		state_message_print(philo, MSG_SLEEPING,
 				get_current_time_stamp(philo->start));
-		usleep(philo->rule.time_to_sleep * 1000);
+		ft_usleep(philo->rule.time_to_sleep * 1000, philo);
 		state_message_print(philo, MSG_THINKING,
 				get_current_time_stamp(philo->start));
 	}
