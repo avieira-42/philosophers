@@ -25,23 +25,8 @@
 # define MSG_TAKEN_FORK "%lld (%i) %s has taken a fork\n"
 # define MSG_EATING "%lld (%i) %s is eating pasta\n"
 # define MSG_SLEEPING "%lld (%i) %s is taking a well deserved shut eye\n"
-# define MSG_THINKING "%lld (%i) %s is frying is brains out\n"
+# define MSG_THINKING "%lld (%i) %s is frying his brains out\n"
 # define MSG_DIED "%lld (%i) %s dead\n"
-
-typedef enum s_state
-{
-	WAITING_TO_EAT,
-	EATING,
-	SLEEPING,
-	THINKING,
-	DEAD,
-}	t_state;
-
-typedef enum s_eating_order
-{
-	ODD,
-	EVEN,
-}	t_eating_order;
 
 typedef struct s_rule
 {
@@ -62,28 +47,39 @@ typedef struct s_mutex
 
 typedef struct s_philo
 {
-	int			life_return;
-	int			chair;
-	char		*name;
-	int			philo_total;
-	long long	start;
-	long long	last_meal;
-	t_state		state;
-	pthread_t	life;
-	t_mutex		*mutex;
-	t_rule		rule;
+	int				life_return;
+	int				chair;
+	int				philo_total;
+	int				last_meal_mutex_return;
+	char			*name;
+	long long		start;
+	long long		last_meal;
+	pthread_t		life;
+	t_mutex			*mutex;
+	pthread_mutex_t	last_meal_mutex;
+	t_rule			rule;
+	bool			*death;
 }	t_philo;
+
+typedef struct s_monitor
+{
+	int				camera_return;
+	t_philo			*philo;
+	pthread_t		camera;
+	bool			death;
+}	t_monitor;
 
 typedef struct s_feast
 {
-	long long			start;
+	long long		start;
 	t_rule			rule;
 	t_mutex			*mutex;
 	t_philo			*philo;
+	t_monitor		monitor;
 }	t_feast;
 
 void	error_exit(t_feast *feast, int exit_code);
-void	parse_arguments(int argc, char **argv);
+void	parse_arguments(int argc);
 void	ft_putstr_fd(char *s, int fd);
 int		ft_atol(const char *nptr);
 

@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -pthread -g
+CFLAGS = -Wall -Wextra -Werror -pthread -g
 NAME = philo
 
 B_NAME = philo_bonus
