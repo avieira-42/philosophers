@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include "../include/philo.h"
 
 static inline
 	int	long_len(long n)
@@ -28,21 +29,40 @@ static inline
 	*len = long_len(n);
 	write_long_to_buf(n, buf, *len - 1);
 }
-
-void	state_write(long time, char *id, char *state)
+static
+	void fast_write(char *status_msg, t_philo *philo)
 {
 	int	i;
 	int	msg_len;
 	char msg[100];
 
-	lotoa(time, msg, &msg_len);
+	lotoa(time_get() - philo->feast->rules.start, msg, &msg_len);
 	i = 0;
 	msg[msg_len++] = ' ';
-	while (id[i])
-		msg[msg_len++] = id[i++];
+	while (philo->id[i])
+		msg[msg_len++] = philo->id[i++];
 	i = 0;
 	msg[msg_len++] = ' ';
-	while (state[i])
-		msg[msg_len++] = state[i++];
+	while (status_msg[i])
+		msg[msg_len++] = status_msg[i++];
 	write(1, msg, msg_len);
+}
+
+void	state_write(t_status status, t_feast *feast, int i)
+{
+	if (feast->philos[i].bloated == true)
+		return ;
+	mutex_handle(&feast->message, LOCK);
+	if ((status == TOOK_FIRST_FORK || status == TOOK_SECOND_FORK)
+		&& !feast_ended(&feast->death, &feast->end))
+		fast_write(MSG_FORK, &feast->philos[i]);
+	else if (status == EATING && !feast_ended(&feast->death, &feast->end))
+		fast_write(MSG_EATING, &feast->philos[i]);
+	else if (status == SLEEPING && !feast_ended(&feast->death, &feast->end))
+		fast_write(MSG_SLEEPING, &feast->philos[i]);
+	else if (status == THINKING && !feast_ended(&feast->death, &feast->end))
+		fast_write(MSG_THINKING, &feast->philos[i]);
+	else if (status == DIED)
+		fast_write(MSG_DIED, &feast->philos[i]);
+	mutex_handle(&feast->message, UNLOCK);
 }

@@ -11,7 +11,14 @@ SRCS = srcs/main.c \
 	   srcs/state_write.c \
 	   srcs/parse.c \
 	   srcs/feast_init.c \
-	   srcs/time_get.c
+	   srcs/feast.c \
+	   srcs/time_get.c \
+	   srcs/philo_live.c \
+	   srcs/death_collector.c \
+	   srcs/wait_all.c \
+	   srcs/mutex.c \
+	   srcs/getter_setter.c \
+	   srcs/precise_usleep.c
 
 OBJS = $(SRCS:.c=.o)
 
