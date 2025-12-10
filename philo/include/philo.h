@@ -16,8 +16,8 @@ typedef pthread_t		t_thread;
 # define MSG_USAGE_2 "Only positive numbers allowed\n"
 # define MSG_FORK "has taken a fork\n"
 # define MSG_EATING "is eating\n"
-# define MSG_SLEEPING "is_sleeping\n"
-# define MSG_THINKING "is_thinking\n"
+# define MSG_SLEEPING "is sleeping\n"
+# define MSG_THINKING "is thinking\n"
 # define MSG_DIED "died\n"
 
 typedef struct s_feast t_feast;
@@ -72,11 +72,13 @@ typedef struct s_philo
 struct s_feast
 {
 	bool		end;
+	long		threads_run_n;
 	t_rule		rules;
 	t_mutex		message;
 	t_mutex		death;
 	t_mutex		wait;
 	t_mutex		start;
+	t_mutex		mutex;
 	t_mutex		forks[PHILO_MAX];
 	t_philo		philos[PHILO_MAX];
 	t_thread	death_collector;
@@ -103,6 +105,8 @@ int			feast_begin(t_feast *feast);
 
 /*#######################     WAIT_ALL    ###########################*/
 void		wait_all(t_philo *philo);
+void		increase_long(t_mutex *mutex, long *value);
+bool		all_sat(t_mutex *mutex, long *threads, long philo_n);
 
 /*#######################      PHILO      ###########################*/
 void		*philo_live(void *arg);
@@ -114,16 +118,16 @@ void		*death_collector(void *arg);
 long long	time_get(void);
 
 /*#######################  PRECISE_USLEEP ###########################*/
-void	precise_usleep(long usec, t_philo *philo);
+void		precise_usleep(long usec, t_philo *philo);
 
 /*#######################      MUTEX      ###########################*/
-void	mutex_handle(t_mutex *mutex, t_option option);
+void		mutex_handle(t_mutex *mutex, t_option option);
 
 /*#######################  GETTER_SETTER  ###########################*/
-void	set_bool(t_mutex *mutex, bool *dest, bool value);
-bool	get_bool(t_mutex *mutex, bool *value);
-void	set_long(t_mutex *mutex, long *dest, long value);
-long	get_long(t_mutex *mutex, long *value);
-bool	feast_ended(t_mutex *death, bool *end);
+void		set_bool(t_mutex *mutex, bool *dest, bool value);
+bool		get_bool(t_mutex *mutex, bool *value);
+void		set_long(t_mutex *mutex, long *dest, long value);
+long		get_long(t_mutex *mutex, long *value);
+bool		feast_ended(t_mutex *death, bool *end);
 
 #endif

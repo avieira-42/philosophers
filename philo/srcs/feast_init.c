@@ -6,6 +6,8 @@ static inline
 {
 	int	i;
 
+	if (pthread_mutex_init(&feast->mutex, NULL))
+		return (-1);
 	if (pthread_mutex_init(&feast->wait, NULL))
 		return (-1);
 	if (pthread_mutex_init(&feast->message, NULL))
@@ -41,7 +43,7 @@ static inline
 	int	philo_n;
 
 	philo_n = philo->feast->rules.ph_n;
-	if (philo->n % 2 == 1)
+	if (philo->n % 2 == 0)
 	{
 		philo->first_fork = &forks[i];
 		philo->second_fork = &forks[(i + 1) % philo_n];
@@ -85,6 +87,7 @@ int	feast_init(t_feast *feast, int argc, char **argv)
 	feast->rules.time_to_die = ft_atol(argv[2]);
 	feast->rules.time_to_eat = ft_atol(argv[3]);
 	feast->rules.time_to_sleep = ft_atol(argv[4]);
+	feast->threads_run_n = 0;
 	if (argc == 6)
 		feast->rules.meals_max = ft_atol(argv[5]);
 	else

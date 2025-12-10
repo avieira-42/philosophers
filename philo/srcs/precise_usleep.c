@@ -18,5 +18,9 @@ void	precise_usleep(long usec, t_philo *philo)
 		(void) remaining;
 		if (remaining > 1000)
 			usleep(remaining / 2);
+		else
+		{
+			while (time_get() - start < usec);
+		}
 	}
 }
