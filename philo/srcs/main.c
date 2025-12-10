@@ -7,6 +7,16 @@ static inline
 	(void)time;
 }
 
+static inline
+	void	*death_collector(void *arg)
+{
+	t_feast	*feast;
+
+	(void)feast;
+	feast = (t_feast *)arg;
+	return (NULL);
+}
+
 static
 	void *philo_live(void *arg)
 {
@@ -54,6 +64,9 @@ static
 			return (-1);
 		i++;
 	}
+	if (pthread_create(&feast->death_collector,
+					NULL, death_collector, feast))
+			return (-1);
 	return (0);
 }
 
