@@ -32,9 +32,11 @@ void	*death_collector(void *arg)
 			{
 				set_bool(&feast->mutex, &feast->end, true);
 				state_write(DIED, feast, i);
+				return (NULL);
 			}
 			i++;
 		}
+		usleep(5000);
 	}
 	return (NULL);
 }

@@ -4,7 +4,20 @@
 static inline
 	void	thinking(t_philo *philo)
 {
+	long	t_eat;
+	long	t_sleep;
+	long	t_think;
+
+
 	state_write(THINKING, philo->feast, philo->n - 1);
+	if (philo->feast->rules.ph_n % 2 == 0)
+		return ;
+	t_eat = philo->feast->rules.time_to_eat;
+	t_sleep = philo->feast->rules.time_to_sleep;
+	t_think = t_eat * 2 - t_sleep;
+	if (t_think < 0)
+		t_think = 0;
+	precise_usleep(t_think * 0.42, philo);
 }
 
 static inline
@@ -22,7 +35,6 @@ static inline
 	mutex_handle(philo->second_fork, LOCK);
 	state_write(TOOK_SECOND_FORK, philo->feast, philo->n - 1);
 	set_long(&philo->mutex, &philo->last_meal, time_get());
-	precise_usleep(philo->feast->rules.time_to_eat, philo);
 	philo->meals++;
 	state_write(EATING, philo->feast, philo->n - 1);
 	precise_usleep(philo->feast->rules.time_to_eat, philo);
@@ -33,6 +45,21 @@ static inline
 	mutex_handle(philo->second_fork, UNLOCK);
 }
 
+//static inline
+	void	fairness_apply(t_philo *philo)
+{
+	if (philo->feast->rules.ph_n % 2 == 0)
+	{
+		if ((philo->n - 1) % 2 == 0)
+			precise_usleep(300, philo);
+	}
+	else
+	{
+		if ((philo->n - 1) % 2 == 1)
+			thinking(philo);
+	}
+}
+
 void *philo_live(void *arg)
 {
 	t_philo	*philo;
@@ -41,6 +68,7 @@ void *philo_live(void *arg)
 	wait_all(philo);
 	set_long(&philo->mutex, &philo->last_meal, time_get());
 	increase_long(&philo->feast->mutex, &philo->feast->threads_run_n);
+	//fairness_apply(philo);
 	while (!feast_ended(&philo->feast->death, &philo->feast->end))
 	{
 		eating(philo);

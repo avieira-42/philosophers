@@ -18,5 +18,4 @@ int	main(int argc, char **argv)
 	if (feast_init(&feast, argc, argv) == -1)
 		return (3);
 	feast_begin(&feast);
-	feast_celebrate(&feast);
 }

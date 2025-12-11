@@ -100,7 +100,6 @@ void		ft_itoa(int n, char *buf);
 int			feast_init(t_feast *feast, int argc, char **argv);
 
 /*#######################      FEAST      ###########################*/
-void		feast_celebrate(t_feast *feast);
 int			feast_begin(t_feast *feast);
 
 /*#######################     WAIT_ALL    ###########################*/

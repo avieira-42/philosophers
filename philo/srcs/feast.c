@@ -1,7 +1,8 @@
 #include <unistd.h>
 #include "../include/philo.h"
 
-void	feast_celebrate(t_feast *feast)
+static inline
+	void	feast_celebrate(t_feast *feast)
 {
 	int	i;
 
@@ -30,5 +31,8 @@ int	feast_begin(t_feast *feast)
 			return (-1);
 	feast->rules.start = time_get();
 	set_bool(&feast->wait, &feast->rules.wait, false);
+	feast_celebrate(feast);
+	set_bool(&feast->mutex, &feast->end, true);
+	pthread_join(feast->death_collector, NULL);
 	return (0);
 }
