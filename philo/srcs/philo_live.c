@@ -8,7 +8,6 @@ static inline
 	long	t_sleep;
 	long	t_think;
 
-
 	state_write(THINKING, philo->feast, philo->n - 1);
 	if (philo->feast->rules.ph_n % 2 == 0)
 		return ;
@@ -34,10 +33,10 @@ static inline
 	state_write(TOOK_FIRST_FORK, philo->feast, philo->n - 1);
 	mutex_handle(philo->second_fork, LOCK);
 	state_write(TOOK_SECOND_FORK, philo->feast, philo->n - 1);
-	set_long(&philo->mutex, &philo->last_meal, time_get());
-	philo->meals++;
 	state_write(EATING, philo->feast, philo->n - 1);
+	set_long(&philo->mutex, &philo->last_meal, time_get());
 	precise_usleep(philo->feast->rules.time_to_eat, philo);
+	philo->meals++;
 	if (philo->feast->rules.meals_max > 0
 		&& philo->meals == philo->feast->rules.meals_max)
 		set_bool(&philo->mutex, &philo->bloated, true);
@@ -51,7 +50,6 @@ void *philo_live(void *arg)
 
 	philo = (t_philo *)arg;
 	wait_all(philo);
-	//set_long(&philo->mutex, &philo->last_meal, time_get());
 	set_long(&philo->mutex, &philo->last_meal, philo->feast->rules.start);
 	increase_long(&philo->feast->mutex, &philo->feast->threads_run_n);
 	while (!feast_ended(&philo->feast->death, &philo->feast->end))

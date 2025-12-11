@@ -25,7 +25,7 @@ typedef struct s_feast t_feast;
 typedef enum e_option
 {
 	INIT,
-	CtrueREATE,
+	CREATE,
 	DESTROY,
 	LOCK,
 	UNLOCK,
@@ -103,7 +103,7 @@ int			feast_init(t_feast *feast, int argc, char **argv);
 int			feast_begin(t_feast *feast);
 
 /*#######################     WAIT_ALL    ###########################*/
-void		wait_all(t_philo *philo);
+int			wait_all(t_philo *philo);
 void		increase_long(t_mutex *mutex, long *value);
 bool		all_sat(t_mutex *mutex, long *threads, long philo_n);
 
@@ -128,5 +128,8 @@ bool		get_bool(t_mutex *mutex, bool *value);
 void		set_long(t_mutex *mutex, long *dest, long value);
 long		get_long(t_mutex *mutex, long *value);
 bool		feast_ended(t_mutex *death, bool *end);
+
+/*#######################   ERROR_RETURN  ###########################*/
+int			error_return(t_feast *feast, int error_code);
 
 #endif

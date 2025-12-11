@@ -10,7 +10,7 @@ static inline
 	elapsed = time_get() - get_long(&philo->mutex, &philo->last_meal);
 	t_to_die = philo->feast->rules.time_to_die;
 
-	if (elapsed > t_to_die)
+	if (elapsed >= t_to_die)
 		return (true);
 	return (false);
 }
@@ -21,8 +21,7 @@ void	*death_collector(void *arg)
 	t_feast	*feast;
 
 	feast = (t_feast *)arg;
-	wait_all(&feast->philos[0]);
-	while (!all_sat(&feast->mutex, &feast->threads_run_n, feast->rules.ph_n));
+	all_sat(&feast->mutex, &feast->threads_run_n, feast->rules.ph_n);
 	while (!feast_ended(&feast->death, &feast->end))
 	{
 		i = 0;
@@ -30,13 +29,13 @@ void	*death_collector(void *arg)
 		{
 			if (philo_died(&feast->philos[i]))
 			{
-				set_bool(&feast->mutex, &feast->end, true);
+				set_bool(&feast->death, &feast->end, true);
 				state_write(DIED, feast, i);
 				return (NULL);
 			}
 			i++;
 		}
-		usleep(5000);
+		usleep(500);
 	}
 	return (NULL);
 }

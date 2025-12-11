@@ -1,6 +1,6 @@
 CC = cc
 
-FLAGS = -Wall -Wextra -Werror -g -pthread -fsanitize=thread
+FLAGS = -Wall -Wextra -Werror -g -pthread
 
 NAME = philo
 
@@ -18,7 +18,8 @@ SRCS = srcs/main.c \
 	   srcs/wait_all.c \
 	   srcs/mutex.c \
 	   srcs/getter_setter.c \
-	   srcs/precise_usleep.c
+	   srcs/precise_usleep.c \
+	   srcs/error.c
 
 OBJS = $(SRCS:.c=.o)
 

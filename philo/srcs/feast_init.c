@@ -5,20 +5,22 @@ static inline
 	int	mutexes_init(t_feast *feast)
 {
 	int	i;
+	int	return_code;
 
 	if (pthread_mutex_init(&feast->mutex, NULL))
 		return (-1);
 	if (pthread_mutex_init(&feast->wait, NULL))
-		return (-1);
+		return (1);
 	if (pthread_mutex_init(&feast->message, NULL))
-		return (-1);
+		return (2);
 	if (pthread_mutex_init(&feast->death, NULL))
-		return (-1);
+		return (3);
 	i = 0;
+	return_code = 4;
 	while (i < feast->rules.ph_n)
 	{
-		if (pthread_mutex_init(&feast->forks[i], NULL))
-			return (-1);
+		if (pthread_mutex_init(&feast->forks[i], NULL) == -1)
+			return (return_code + i);
 		i++;
 	}
 	return (0);
@@ -80,6 +82,8 @@ static inline
 
 int	feast_init(t_feast *feast, int argc, char **argv)
 {
+	int	return_code;
+
 	feast->end = false;
 	feast->rules.wait = true;
 	feast->rules.victim = 0;
@@ -92,9 +96,11 @@ int	feast_init(t_feast *feast, int argc, char **argv)
 		feast->rules.meals_max = ft_atol(argv[5]);
 	else
 		feast->rules.meals_max = -1;
-	if (mutexes_init(feast) == -1)
-		return (-1);
-	if (philos_init(feast) == -1)
-		return (-1);
-	return (1);
+	return_code = mutexes_init(feast);
+	if (return_code != 0)
+		return (return_code);
+	return_code = philos_init(feast);
+	if (return_code != 0)
+		return (return_code);
+	return (0);
 }
