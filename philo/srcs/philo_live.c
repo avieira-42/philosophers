@@ -45,30 +45,15 @@ static inline
 	mutex_handle(philo->second_fork, UNLOCK);
 }
 
-//static inline
-	void	fairness_apply(t_philo *philo)
-{
-	if (philo->feast->rules.ph_n % 2 == 0)
-	{
-		if ((philo->n - 1) % 2 == 0)
-			precise_usleep(300, philo);
-	}
-	else
-	{
-		if ((philo->n - 1) % 2 == 1)
-			thinking(philo);
-	}
-}
-
 void *philo_live(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
 	wait_all(philo);
-	set_long(&philo->mutex, &philo->last_meal, time_get());
+	//set_long(&philo->mutex, &philo->last_meal, time_get());
+	set_long(&philo->mutex, &philo->last_meal, philo->feast->rules.start);
 	increase_long(&philo->feast->mutex, &philo->feast->threads_run_n);
-	//fairness_apply(philo);
 	while (!feast_ended(&philo->feast->death, &philo->feast->end))
 	{
 		eating(philo);
