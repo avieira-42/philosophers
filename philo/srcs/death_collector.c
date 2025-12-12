@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   death_collector.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/12 02:28:03 by avieira-          #+#    #+#             */
+/*   Updated: 2025/12/12 02:29:11 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
 #include "../include/philo.h"
 
@@ -9,7 +21,6 @@ static inline
 
 	elapsed = time_get() - get_long(&philo->mutex, &philo->last_meal);
 	t_to_die = philo->feast->rules.time_to_die;
-
 	if (elapsed >= t_to_die)
 		return (true);
 	return (false);

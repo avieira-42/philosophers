@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   state_write.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/12 02:38:22 by avieira-          #+#    #+#             */
+/*   Updated: 2025/12/12 02:38:33 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
 #include "../include/philo.h"
 
 static inline
 	int	long_len(long n)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while (n > 9)
@@ -18,7 +30,7 @@ static inline
 static inline
 	void	write_long_to_buf(long n, char *buf, int len)
 {
-	if(n > 9)
+	if (n > 9)
 		write_long_to_buf(n / 10, buf, len - 1);
 	buf[len] = n % 10 + '0';
 }
@@ -29,12 +41,13 @@ static inline
 	*len = long_len(n);
 	write_long_to_buf(n, buf, *len - 1);
 }
-static
-	void fast_write(char *status_msg, t_philo *philo)
+
+static inline
+	void	fast_write(char *status_msg, t_philo *philo)
 {
-	int	i;
-	int	msg_len;
-	char msg[100];
+	int		i;
+	int		msg_len;
+	char	msg[100];
 
 	lotoa(time_get() - philo->feast->rules.start, msg, &msg_len);
 	i = 0;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   feast_init.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/12 02:31:22 by avieira-          #+#    #+#             */
+/*   Updated: 2025/12/12 02:31:24 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/philo.h"
 #include <stdio.h>
 
@@ -32,7 +44,7 @@ static inline
 	int	i;
 
 	i = 99;
-	while (i > - 1)
+	while (i > -1)
 	{
 		buf[i] = 0;
 		i--;
@@ -74,7 +86,7 @@ static inline
 		feast->philos[i].meals = 0;
 		forks_assign(&feast->philos[i], feast->forks, i);
 		if (pthread_mutex_init(&feast->philos[i].mutex, NULL) == -1)
-			return (-1);
+			return (i);
 		i++;
 	}
 	return (0);
@@ -101,6 +113,6 @@ int	feast_init(t_feast *feast, int argc, char **argv)
 		return (return_code);
 	return_code = philos_init(feast);
 	if (return_code != 0)
-		return (return_code);
+		return (return_code + 4 + feast->rules.ph_n);
 	return (0);
 }

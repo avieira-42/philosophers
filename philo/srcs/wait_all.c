@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wait_all.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/12 02:34:41 by avieira-          #+#    #+#             */
+/*   Updated: 2025/12/12 02:34:46 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
 #include "../include/philo.h"
 
@@ -28,7 +40,7 @@ int	wait_all(t_philo *philo)
 {
 	while (get_bool(&philo->feast->wait, &philo->feast->rules.wait))
 	{
-		if (philo->feast->end == true)
+		if (get_bool(&philo->feast->death, &philo->feast->end) == true)
 			return (1);
 		usleep(10);
 	}

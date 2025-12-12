@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_live.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/12 02:39:09 by avieira-          #+#    #+#             */
+/*   Updated: 2025/12/12 02:39:13 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
 #include "../include/philo.h"
 
@@ -44,12 +56,28 @@ static inline
 	mutex_handle(philo->second_fork, UNLOCK);
 }
 
-void *philo_live(void *arg)
+void	*essay_write(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	wait_all(philo);
+	if (wait_all(philo) != 0)
+		return (NULL);
+	set_long(&philo->mutex, &philo->last_meal, philo->feast->rules.start);
+	increase_long(&philo->feast->mutex, &philo->feast->threads_run_n);
+	mutex_handle(philo->first_fork, LOCK);
+	precise_usleep(philo->feast->rules.time_to_die, philo);
+	mutex_handle(philo->first_fork, UNLOCK);
+	return (NULL);
+}
+
+void	*philo_live(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	if (wait_all(philo) != 0)
+		return (NULL);
 	set_long(&philo->mutex, &philo->last_meal, philo->feast->rules.start);
 	increase_long(&philo->feast->mutex, &philo->feast->threads_run_n);
 	while (!feast_ended(&philo->feast->death, &philo->feast->end))

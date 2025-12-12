@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/12 02:27:16 by avieira-          #+#    #+#             */
+/*   Updated: 2025/12/12 02:27:41 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -20,7 +32,7 @@ typedef pthread_t		t_thread;
 # define MSG_THINKING "is thinking\n"
 # define MSG_DIED "died\n"
 
-typedef struct s_feast t_feast;
+typedef struct s_feast	t_feast;
 
 typedef enum e_option
 {
@@ -101,6 +113,7 @@ int			feast_init(t_feast *feast, int argc, char **argv);
 
 /*#######################      FEAST      ###########################*/
 int			feast_begin(t_feast *feast);
+int			monologue_begin(t_feast *feast);
 
 /*#######################     WAIT_ALL    ###########################*/
 int			wait_all(t_philo *philo);
@@ -118,6 +131,7 @@ long long	time_get(void);
 
 /*#######################  PRECISE_USLEEP ###########################*/
 void		precise_usleep(long usec, t_philo *philo);
+void		*essay_write(void *arg);
 
 /*#######################      MUTEX      ###########################*/
 void		mutex_handle(t_mutex *mutex, t_option option);
@@ -130,6 +144,6 @@ long		get_long(t_mutex *mutex, long *value);
 bool		feast_ended(t_mutex *death, bool *end);
 
 /*#######################   ERROR_RETURN  ###########################*/
-int			error_return(t_feast *feast, int error_code);
+int			error_return(t_feast *feast, int return_code, int error_code);
 
 #endif
