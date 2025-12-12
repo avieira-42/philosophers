@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 02:39:09 by avieira-          #+#    #+#             */
-/*   Updated: 2025/12/12 02:39:13 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/12/12 13:24:24 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static inline
 	precise_usleep(philo->feast->rules.time_to_sleep, philo);
 }
 
+#include <stdio.h>
 static inline
 	void	eating(t_philo *philo)
 {
@@ -50,8 +51,13 @@ static inline
 	precise_usleep(philo->feast->rules.time_to_eat, philo);
 	philo->meals++;
 	if (philo->feast->rules.meals_max > 0
-		&& philo->meals == philo->feast->rules.meals_max)
+		&& philo->meals == philo->feast->rules.meals_max
+		&& philo->bloated == false)
+	{
 		set_bool(&philo->mutex, &philo->bloated, true);
+		increase_long(&philo->feast->bloated_count_mtx,
+				&philo->feast->bloated_count);
+	}
 	mutex_handle(philo->first_fork, UNLOCK);
 	mutex_handle(philo->second_fork, UNLOCK);
 }
@@ -64,10 +70,9 @@ void	*essay_write(void *arg)
 	if (wait_all(philo) != 0)
 		return (NULL);
 	set_long(&philo->mutex, &philo->last_meal, philo->feast->rules.start);
+	state_write(TOOK_FIRST_FORK, philo->feast, philo->n - 1);
 	increase_long(&philo->feast->mutex, &philo->feast->threads_run_n);
-	mutex_handle(philo->first_fork, LOCK);
 	precise_usleep(philo->feast->rules.time_to_die, philo);
-	mutex_handle(philo->first_fork, UNLOCK);
 	return (NULL);
 }
 
@@ -80,7 +85,8 @@ void	*philo_live(void *arg)
 		return (NULL);
 	set_long(&philo->mutex, &philo->last_meal, philo->feast->rules.start);
 	increase_long(&philo->feast->mutex, &philo->feast->threads_run_n);
-	while (!feast_ended(&philo->feast->death, &philo->feast->end))
+	while (!feast_ended(&philo->feast->death, &philo->feast->end,
+				&philo->feast->bloated, &philo->feast->full))
 	{
 		eating(philo);
 		sleeping(philo);

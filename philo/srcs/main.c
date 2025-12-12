@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 02:32:54 by avieira-          #+#    #+#             */
-/*   Updated: 2025/12/12 02:32:55 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/12/12 13:13:22 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	main(int argc, char **argv)
 		write(1, MSG_USAGE_2, ft_strlen(MSG_USAGE_2));
 		return (2);
 	}
+	if (argc == 6 && ft_atol(argv[5]) == 0)
+		return (0);
 	error_code = feast_init(&feast, argc, argv);
 	if (error_code != 0)
 		return (error_return(&feast, 1, error_code));
@@ -36,5 +38,5 @@ int	main(int argc, char **argv)
 		return_code = monologue_begin(&feast);
 	else
 		return_code = feast_begin(&feast);
-	error_return(&feast, return_code, feast.rules.ph_n * 2 + 4);
+	error_return(&feast, return_code, feast.rules.ph_n * 2 + 6);
 }

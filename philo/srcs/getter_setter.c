@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 02:31:39 by avieira-          #+#    #+#             */
-/*   Updated: 2025/12/12 02:31:45 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/12/12 12:45:40 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ long	get_long(t_mutex *mutex, long *value)
 	return (ret);
 }
 
-bool	feast_ended(t_mutex *death, bool *end)
+bool	feast_ended(t_mutex *death, bool *end, t_mutex *bloat, bool *full)
 {
-	return (get_bool(death, end));
+	return (get_bool(death, end) || get_bool(bloat, full));
 }

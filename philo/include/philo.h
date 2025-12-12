@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 02:27:16 by avieira-          #+#    #+#             */
-/*   Updated: 2025/12/12 02:27:41 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/12/12 13:12:33 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,8 @@ typedef struct s_feast	t_feast;
 
 typedef enum e_option
 {
-	INIT,
-	CREATE,
-	DESTROY,
 	LOCK,
 	UNLOCK,
-	JOIN,
-	DETACH,
 }	t_option;
 
 typedef enum e_status
@@ -84,6 +79,8 @@ typedef struct s_philo
 struct s_feast
 {
 	bool		end;
+	bool		full;
+	long		bloated_count;
 	long		threads_run_n;
 	t_rule		rules;
 	t_mutex		message;
@@ -91,6 +88,8 @@ struct s_feast
 	t_mutex		wait;
 	t_mutex		start;
 	t_mutex		mutex;
+	t_mutex		bloated_count_mtx;
+	t_mutex		bloated;
 	t_mutex		forks[PHILO_MAX];
 	t_philo		philos[PHILO_MAX];
 	t_thread	death_collector;
@@ -141,7 +140,8 @@ void		set_bool(t_mutex *mutex, bool *dest, bool value);
 bool		get_bool(t_mutex *mutex, bool *value);
 void		set_long(t_mutex *mutex, long *dest, long value);
 long		get_long(t_mutex *mutex, long *value);
-bool		feast_ended(t_mutex *death, bool *end);
+//bool		feast_ended(t_mutex *death, bool *end);
+bool		feast_ended(t_mutex *death, bool *end, t_mutex *bloat, bool *full);
 
 /*#######################   ERROR_RETURN  ###########################*/
 int			error_return(t_feast *feast, int return_code, int error_code);

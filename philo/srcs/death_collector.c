@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 02:28:03 by avieira-          #+#    #+#             */
-/*   Updated: 2025/12/12 02:29:11 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/12/12 13:12:48 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,19 @@ static inline
 	return (false);
 }
 
+static inline
+	bool philos_full(t_feast *feast)
+{
+	bool	ret;
+
+	ret = false;
+	mutex_handle(&feast->bloated_count_mtx, LOCK);
+	if (feast->bloated_count == feast->rules.ph_n)
+		ret = true;
+	mutex_handle(&feast->bloated_count_mtx, UNLOCK);
+	return (ret);
+}
+
 void	*death_collector(void *arg)
 {
 	int		i;
@@ -33,10 +46,13 @@ void	*death_collector(void *arg)
 
 	feast = (t_feast *)arg;
 	all_sat(&feast->mutex, &feast->threads_run_n, feast->rules.ph_n);
-	while (!feast_ended(&feast->death, &feast->end))
+	while (!feast_ended(&feast->death, &feast->end,
+				&feast->bloated, &feast->full))
 	{
-		i = 0;
-		while (i < feast->rules.ph_n)
+		if (philos_full(feast) == true)
+			return (set_bool(&feast->bloated, &feast->full, true), NULL);
+		i = -1;
+		while (++i < feast->rules.ph_n)
 		{
 			if (philo_died(&feast->philos[i]))
 			{
@@ -44,7 +60,6 @@ void	*death_collector(void *arg)
 				state_write(DIED, feast, i);
 				return (NULL);
 			}
-			i++;
 		}
 		usleep(500);
 	}

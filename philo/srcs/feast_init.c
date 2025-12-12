@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 02:31:22 by avieira-          #+#    #+#             */
-/*   Updated: 2025/12/12 02:31:24 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/12/12 13:14:28 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,12 @@ static inline
 		return (2);
 	if (pthread_mutex_init(&feast->death, NULL))
 		return (3);
+	if (pthread_mutex_init(&feast->bloated, NULL))
+		return (4);
+	if (pthread_mutex_init(&feast->bloated_count_mtx, NULL))
+		return (5);
 	i = 0;
-	return_code = 4;
+	return_code = 6;
 	while (i < feast->rules.ph_n)
 	{
 		if (pthread_mutex_init(&feast->forks[i], NULL) == -1)
@@ -96,7 +100,9 @@ int	feast_init(t_feast *feast, int argc, char **argv)
 {
 	int	return_code;
 
+	feast->full = false;
 	feast->end = false;
+	feast->bloated_count = 0;
 	feast->rules.wait = true;
 	feast->rules.victim = 0;
 	feast->rules.ph_n = ft_atol(argv[1]);
@@ -113,6 +119,6 @@ int	feast_init(t_feast *feast, int argc, char **argv)
 		return (return_code);
 	return_code = philos_init(feast);
 	if (return_code != 0)
-		return (return_code + 4 + feast->rules.ph_n);
+		return (return_code + 6 + feast->rules.ph_n);
 	return (0);
 }

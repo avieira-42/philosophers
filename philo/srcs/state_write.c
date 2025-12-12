@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 02:38:22 by avieira-          #+#    #+#             */
-/*   Updated: 2025/12/12 02:38:33 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/12/12 12:50:54 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,20 @@ void	state_write(t_status status, t_feast *feast, int i)
 		return ;
 	mutex_handle(&feast->message, LOCK);
 	if ((status == TOOK_FIRST_FORK || status == TOOK_SECOND_FORK)
-		&& !feast_ended(&feast->death, &feast->end))
+		&& !feast_ended(&feast->death, &feast->end,
+			&feast->bloated, &feast->full))
 		fast_write(MSG_FORK, &feast->philos[i]);
-	else if (status == EATING && !feast_ended(&feast->death, &feast->end))
+	else if ((status == EATING) && !feast_ended(&feast->death, &feast->end,
+			&feast->bloated, &feast->full))
 		fast_write(MSG_EATING, &feast->philos[i]);
-	else if (status == SLEEPING && !feast_ended(&feast->death, &feast->end))
+	else if ((status == SLEEPING) && !feast_ended(&feast->death, &feast->end,
+			&feast->bloated, &feast->full))
 		fast_write(MSG_SLEEPING, &feast->philos[i]);
-	else if (status == THINKING && !feast_ended(&feast->death, &feast->end))
+	else if ((status == THINKING) && !feast_ended(&feast->death, &feast->end,
+			&feast->bloated, &feast->full))
 		fast_write(MSG_THINKING, &feast->philos[i]);
-	else if (status == DIED)
+	else if ((status == EATING) && !feast_ended(&feast->death, &feast->end,
+			&feast->bloated, &feast->full))
 		fast_write(MSG_DIED, &feast->philos[i]);
 	mutex_handle(&feast->message, UNLOCK);
 }
