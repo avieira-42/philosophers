@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 02:38:59 by avieira-          #+#    #+#             */
-/*   Updated: 2025/12/12 12:52:43 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/12/12 14:24:37 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	precise_usleep(long usec, t_philo *philo)
 	while (time_get() - start <= usec)
 	{
 		if (feast_ended(&philo->feast->death, &philo->feast->end,
-					&philo->feast->bloated, &philo->feast->full))
+				&philo->feast->bloated, &philo->feast->full))
 			break ;
 		usleep(50);
 	}

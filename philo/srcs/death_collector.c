@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 02:28:03 by avieira-          #+#    #+#             */
-/*   Updated: 2025/12/12 13:12:48 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/12/12 14:24:27 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static inline
 }
 
 static inline
-	bool philos_full(t_feast *feast)
+	bool	philos_full(t_feast *feast)
 {
 	bool	ret;
 
@@ -47,7 +47,7 @@ void	*death_collector(void *arg)
 	feast = (t_feast *)arg;
 	all_sat(&feast->mutex, &feast->threads_run_n, feast->rules.ph_n);
 	while (!feast_ended(&feast->death, &feast->end,
-				&feast->bloated, &feast->full))
+			&feast->bloated, &feast->full))
 	{
 		if (philos_full(feast) == true)
 			return (set_bool(&feast->bloated, &feast->full, true), NULL);
@@ -56,8 +56,8 @@ void	*death_collector(void *arg)
 		{
 			if (philo_died(&feast->philos[i]))
 			{
-				set_bool(&feast->death, &feast->end, true);
 				state_write(DIED, feast, i);
+				set_bool(&feast->death, &feast->end, true);
 				return (NULL);
 			}
 		}

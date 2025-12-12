@@ -6,12 +6,12 @@
 #    By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/12 03:51:00 by avieira-          #+#    #+#              #
-#    Updated: 2025/12/12 13:14:58 by avieira-         ###   ########.fr        #
+#    Updated: 2025/12/12 14:22:56 by avieira-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-FLAGS = -Wall -Wextra -Werror -g -pthread -fsanitize=thread
+FLAGS = -Wall -Wextra -Werror -g -pthread
 
 NAME = philo
 OUTFILE = -o $(NAME)

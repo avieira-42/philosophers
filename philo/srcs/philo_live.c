@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 02:39:09 by avieira-          #+#    #+#             */
-/*   Updated: 2025/12/12 13:24:24 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/12/12 14:25:03 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static inline
 	precise_usleep(philo->feast->rules.time_to_sleep, philo);
 }
 
-#include <stdio.h>
 static inline
 	void	eating(t_philo *philo)
 {
@@ -56,7 +55,7 @@ static inline
 	{
 		set_bool(&philo->mutex, &philo->bloated, true);
 		increase_long(&philo->feast->bloated_count_mtx,
-				&philo->feast->bloated_count);
+			&philo->feast->bloated_count);
 	}
 	mutex_handle(philo->first_fork, UNLOCK);
 	mutex_handle(philo->second_fork, UNLOCK);
@@ -86,7 +85,7 @@ void	*philo_live(void *arg)
 	set_long(&philo->mutex, &philo->last_meal, philo->feast->rules.start);
 	increase_long(&philo->feast->mutex, &philo->feast->threads_run_n);
 	while (!feast_ended(&philo->feast->death, &philo->feast->end,
-				&philo->feast->bloated, &philo->feast->full))
+			&philo->feast->bloated, &philo->feast->full))
 	{
 		eating(philo);
 		sleeping(philo);

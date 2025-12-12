@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 02:32:32 by avieira-          #+#    #+#             */
-/*   Updated: 2025/12/12 02:32:33 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/12/12 14:23:54 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,13 @@ static
 void	ft_itoa(int n, char *buf)
 {
 	int	len;
+	int	tmp_n;
 
 	len = 0;
-	while (n > 9)
+	tmp_n = n;
+	while (tmp_n > 9)
 	{
-		n = n / 10;
+		tmp_n = tmp_n / 10;
 		len++;
 	}
 	len++;
