@@ -6,12 +6,12 @@
 #    By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/12 03:51:00 by avieira-          #+#    #+#              #
-#    Updated: 2025/12/14 14:57:43 by avieira-         ###   ########.fr        #
+#    Updated: 2025/12/14 15:00:32 by avieira-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-FLAGS = -Wall -Wextra -Werror -g -pthread -D PHILO_MAX=300
+FLAGS = -Wall -Wextra -Werror -g -pthread -D PHILO_MAX=200
 
 NAME = philo
 OUTFILE = -o $(NAME)
